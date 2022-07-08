@@ -18,11 +18,8 @@ from django.urls import path
 from App import views
 
 urlpatterns = [
-    path('', views.getData, name='words'),
     # To show 1 object type <str:nameOfPrimaryKey>/
-    path('words/new/', views.addWord, name="create-word"),
-    path('words/<str:pk>/edit/', views.updateWord, name='update-word'),
-    path('words/<str:pk>/delete/', views.deleteWord, name='delete-word'),
-    path('words/<str:primaryKey>/', views.getWord, name='word'),
+    path('', views.wordRequest, name="word"),
+    path('words/<str:pk>/', views.wordChangeRequest, name='update-word'),
     path('admin/', admin.site.urls)
 ]
