@@ -1,9 +1,34 @@
 import pdb
-from django.shortcuts import render
+from django.http import JsonResponse
+from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .utils import showWordsList, updateWord, showWordDetail, deleteWord, createWord
 
-# Create your views here.
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+# how to customize your token claims
+# use jwt.io to view json data about from the access token
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        '/token',
+        'token/refresh'
+    ]
+    return Response(routes)
 
 @api_view(['GET','POST'])    
 def wordRequest(request):
